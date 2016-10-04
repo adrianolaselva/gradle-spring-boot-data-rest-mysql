@@ -1,16 +1,43 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+        url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+        classpath("mysql:mysql-connector-java:5.0.8")
+        classpath("gradle.plugin.com.boxfuse.client:flyway-release:4.0.3")
     }
 }
+
+// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+//compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.4'
+
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: "org.flywaydb.flyway"
+
+
+//jdbc:mysql://localhost/db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+
+//?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/boot'
+    user = 'root'
+    password = 'root'
+    schemas = ['boot']
+    encoding = 'UTF-8'
+    sqlMigrationSuffix = '.sql'
+    target = '1.1'
+    validateOnMigrate = true
+}
+
 
 jar {
     baseName = 'gs-accessing-data-rest'
@@ -28,6 +55,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-rest")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("mysql:mysql-connector-java")
+    //compile("org.flywaydb:flyway-core:4.0.3")
     //compile("org.springframework.boot:spring-boot-starter-jdbc")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
+
+// https://mvnrepository.com/artifact/org.flywaydb/flyway-core
+//compile group: 'org.flywaydb', name: 'flyway-core', version: '4.0.3'
